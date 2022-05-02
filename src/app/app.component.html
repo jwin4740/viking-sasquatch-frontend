@@ -312,6 +312,33 @@
   .example-full-width {
     width: 100%;
   }
+
+  .example-tree-invisible {
+    display: none;
+  }
+
+  .example-tree ul,
+  .example-tree li {
+    margin-top: 0;
+    margin-bottom: 0;
+    list-style-type: none;
+  }
+
+  /*
+ * This padding sets alignment of the nested nodes.
+ */
+  .example-tree .mat-nested-tree-node div[role='group'] {
+    padding-left: 40px;
+  }
+
+  /*
+ * Padding for leaf nodes.
+ * Leaf nodes need to have padding so as to align with other non-leaf nodes
+ * under the same parent.
+ */
+  .example-tree div[role='group'] > .mat-tree-node {
+    padding-left: 40px;
+  }
 </style>
 
 <!-- Toolbar -->
@@ -338,17 +365,17 @@
 </div> -->
 <!---->
 
-<div>
+<!-- <div>
   <div>
     {{ mockData.name }}
   </div>
   <button (click)="editParent()">edit</button>
-  <div *ngIf="false">
-    <!-- put input for name -->
-    <!-- put input for number of children -->
-    <!-- button for confirm -->
-    <!-- button for cancel -->
-  </div>
+  <div *ngIf="false"> -->
+<!-- put input for name -->
+<!-- put input for number of children -->
+<!-- button for confirm -->
+<!-- button for cancel -->
+<!-- </div>
 
   <div class="children" *ngFor="let child of mockData.children">
     {{ child | json }}
@@ -359,8 +386,49 @@
 
     <div *ngIf="child.children"></div>
   </div>
-</div>
+</div> -->
 
+<button id="createFcatory" mat-raised-button color="primary">
+  Create Factory
+</button>
+<br />
+<br />
+
+<mat-tree
+  [dataSource]="dataSource"
+  [treeControl]="treeControl"
+  class="example-tree"
+>
+  <!-- This is the tree node template for leaf nodes -->
+  <!-- There is inline padding applied to this node using styles.
+    This padding value depends on the mat-icon-button width. -->
+  <mat-tree-node *matTreeNodeDef="let node" matTreeNodeToggle>
+    {{ node.name }}
+  </mat-tree-node>
+  <!-- This is the tree node template for expandable nodes -->
+  <mat-nested-tree-node *matTreeNodeDef="let node; when: hasChild">
+    <div class="mat-tree-node">
+      <button
+        mat-icon-button
+        matTreeNodeToggle
+        [attr.aria-label]="'Toggle ' + node.name"
+      >
+        <mat-icon class="mat-icon-rtl-mirror">
+          {{ treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right' }}
+        </mat-icon>
+      </button>
+      {{ node.name }}
+    </div>
+    <!-- There is inline padding applied to this div using styles.
+          This padding value depends on the mat-icon-button width.  -->
+    <div
+      [class.example-tree-invisible]="!treeControl.isExpanded(node)"
+      role="group"
+    >
+      <ng-container matTreeNodeOutlet></ng-container>
+    </div>
+  </mat-nested-tree-node>
+</mat-tree>
 <app-factory></app-factory>
 
 <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
