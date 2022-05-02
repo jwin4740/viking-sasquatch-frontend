@@ -11,7 +11,9 @@
     margin-left: 8px;
     min-width: 120px;
   }
-
+  mat-form-field {
+    margin-right: 25px;
+  }
   .example-button-row {
     display: table-cell;
     width: 490px;
@@ -32,6 +34,11 @@
     justify-content: center;
     width: 120px;
   }
+
+  #generateChildren {
+    margin-left: 25px;
+    margin-right: 50px;
+  }
 </style>
 
 <p>factory works!</p>
@@ -39,23 +46,28 @@
 <!-- factory div -->
 <div class="factory">
   <mat-form-field appearance="fill">
-    <mat-label>Input</mat-label>
+    <mat-label>Factory Name</mat-label>
     <input matInput />
   </mat-form-field>
   <mat-form-field appearance="fill">
-    <mat-label>Select</mat-label>
+    <mat-label>Lower bound children</mat-label>
     <mat-select>
       <mat-option value="one">First option</mat-option>
       <mat-option value="two">Second option</mat-option>
     </mat-select>
   </mat-form-field>
   <mat-form-field appearance="fill">
-    <mat-label>Textarea</mat-label>
-    <textarea matInput></textarea>
+    <mat-label>Upper bound children</mat-label>
+    <mat-select>
+      <mat-option value="one">First option</mat-option>
+      <mat-option value="two">Second option</mat-option>
+    </mat-select>
   </mat-form-field>
-
+  <button id="generateChildren" mat-raised-button color="primary">
+    Generate Children
+  </button>
   <button
-    mat-fab
+    mat-mini-fab
     color="warn"
     aria-label="Example icon button with a delete icon"
   >
