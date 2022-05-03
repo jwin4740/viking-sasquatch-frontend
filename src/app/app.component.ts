@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 
 import { NestedTreeControl } from '@angular/cdk/tree';
 import { MatTreeNestedDataSource } from '@angular/material/tree';
-
+import { faker } from '@faker-js/faker';
 /**
  * Food data with nested structure.
  * Each node has a name and an optional list of children.
@@ -61,6 +61,10 @@ export class AppComponent implements OnInit {
     // this.dataSource.data = TREE_DATA;
   }
   ngOnInit(): void {
+    this.getAllFactories();
+  }
+
+  getAllFactories(): void {
     this.httpClient
       .get<FactoryWithChildrenNode[]>('http://localhost:3000/api/factory')
       .subscribe((data) => {
@@ -77,6 +81,19 @@ export class AppComponent implements OnInit {
     this.httpClient.delete;
     //after 200 response delete node from this.datasource
     console.log(factoryNode);
+  }
+
+  generateRandomFactory(numChildren: number): void {
+    console.warn('entered generateRandomFactory');
+
+    this.httpClient
+      .post('http://localhost:3000/api/factory', {
+        name: faker.name.firstName(),
+        numberOfChildren: numChildren,
+        lowerBoundChildNodes: 1,
+        upperBoundChildNodes: 15,
+      })
+      .subscribe((data) => this.getAllFactories());
   }
 }
 

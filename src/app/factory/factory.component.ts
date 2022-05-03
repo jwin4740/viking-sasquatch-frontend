@@ -40,6 +40,6 @@ export class FactoryComponent implements OnInit, OnChanges {
   generateRandomChildren(): void {
     console.log(`lower bound = ${this.lowerBound}`);
     console.log(`upper bound = ${this.upperBound}`);
-    this.generateRandomChildrenEmitter.emit();
+    this.generateRandomChildrenEmitter.emit(4);
   }
 }
