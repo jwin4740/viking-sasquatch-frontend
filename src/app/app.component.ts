@@ -8,8 +8,9 @@ import { MatTreeNestedDataSource } from '@angular/material/tree';
  * Food data with nested structure.
  * Each node has a name and an optional list of children.
  */
-interface FoodNode {
+export interface FoodNode {
   name: string;
+  id?: number;
   children?: FoodNode[];
 }
 
@@ -36,10 +37,12 @@ interface FoodNode {
 const TREE_DATA: FoodNode[] = [
   {
     name: 'Fruit',
+    id: 1,
     children: [{ name: 'Apple' }, { name: 'Banana' }, { name: 'Fruit loops' }],
   },
   {
     name: 'Vegetables',
+    id: 2,
     children: [{ name: 'Broccoli' }, { name: 'Pea' }, { name: 'Carrot' }],
   },
 ];
@@ -56,15 +59,26 @@ export class AppComponent implements OnInit {
   treeControl = new NestedTreeControl<FoodNode>((node) => node.children);
   dataSource = new MatTreeNestedDataSource<FoodNode>();
 
-  constructor() {
+  constructor(private httpClient: HttpClient) {
     this.dataSource.data = TREE_DATA;
   }
   ngOnInit(): void {
-    throw new Error('Method not implemented.');
+    this.httpClient
+      .get('http://localhost:3000/api/factory')
+      .subscribe((data) => {
+        console.warn(data);
+      });
   }
 
   hasChild = (_: number, node: FoodNode) =>
     !!node.children && node.children.length > 0;
+
+  deleteFactoryById(factoryNode: any): void {
+    console.log('emitter received');
+    this.httpClient.delete;
+    //after 200 response delete node from this.datasource
+    console.log(factoryNode);
+  }
 }
 
 // /**

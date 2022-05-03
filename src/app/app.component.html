@@ -418,7 +418,10 @@
         </mat-icon>
       </button>
       {{ node.name }}
-      <app-factory></app-factory>
+      <app-factory
+        [factoryNode]="node"
+        (deleteNodeEmitter)="deleteFactoryById($event)"
+      ></app-factory>
     </div>
     <!-- There is inline padding applied to this div using styles.
           This padding value depends on the mat-icon-button width.  -->

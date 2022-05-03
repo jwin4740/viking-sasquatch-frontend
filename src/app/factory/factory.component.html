@@ -45,11 +45,11 @@
 <div class="factory">
   <mat-form-field appearance="fill">
     <mat-label>Factory Name</mat-label>
-    <input matInput />
+    <input matInput [value]="factoryNode?.name" />
   </mat-form-field>
   <mat-form-field appearance="fill">
     <mat-label>Lower bound children</mat-label>
-    <mat-select>
+    <mat-select [(value)]="lowerBound">
       <mat-option value="1">1</mat-option>
       <mat-option value="2">2</mat-option>
       <mat-option value="3">3</mat-option>
@@ -68,7 +68,7 @@
   </mat-form-field>
   <mat-form-field appearance="fill">
     <mat-label>Upper bound children</mat-label>
-    <mat-select>
+    <mat-select [(value)]="upperBound">
       <mat-option value="2">2</mat-option>
       <mat-option value="3">3</mat-option>
       <mat-option value="4">4</mat-option>
@@ -85,7 +85,12 @@
       <mat-option value="15">15</mat-option>
     </mat-select>
   </mat-form-field>
-  <button id="generateChildren" mat-raised-button color="primary">
+  <button
+    id="generateChildren"
+    mat-raised-button
+    color="primary"
+    (click)="generateRandomChildren()"
+  >
     Generate Children
   </button>
   <button
@@ -93,6 +98,6 @@
     color="warn"
     aria-label="Example icon button with a delete icon"
   >
-    <mat-icon>delete</mat-icon>
+    <mat-icon (click)="deleteFactory()">delete</mat-icon>
   </button>
 </div>
