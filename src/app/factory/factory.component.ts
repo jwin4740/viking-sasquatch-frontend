@@ -7,7 +7,7 @@ import {
   Output,
   SimpleChanges,
 } from '@angular/core';
-import { FoodNode } from '../app.component';
+import { FactoryWithChildrenNode } from '../app.component';
 
 @Component({
   selector: 'app-factory',
@@ -16,11 +16,11 @@ import { FoodNode } from '../app.component';
 })
 export class FactoryComponent implements OnInit, OnChanges {
   public factoryName: string;
-  lowerBound = 0;
-  upperBound = 0;
-  currentNode: FoodNode | undefined;
-  @Input() factoryNode: FoodNode | undefined;
-  @Output() deleteNodeEmitter = new EventEmitter<FoodNode>();
+  lowerBound = '1';
+  upperBound = '15';
+  currentNode: FactoryWithChildrenNode | undefined;
+  @Input() factoryNode: FactoryWithChildrenNode | undefined;
+  @Output() deleteNodeEmitter = new EventEmitter<FactoryWithChildrenNode>();
 
   @Output() generateRandomChildrenEmitter = new EventEmitter<number>();
   constructor() {

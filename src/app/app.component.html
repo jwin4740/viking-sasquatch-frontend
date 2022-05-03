@@ -417,7 +417,7 @@
           {{ treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right' }}
         </mat-icon>
       </button>
-      {{ node.name }}
+
       <app-factory
         [factoryNode]="node"
         (deleteNodeEmitter)="deleteFactoryById($event)"

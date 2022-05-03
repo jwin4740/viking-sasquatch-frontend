@@ -14,25 +14,20 @@ export interface FoodNode {
   children?: FoodNode[];
 }
 
-// const TREE_DATA: FoodNode[] = [
-//   {
-//     name: 'Fruit',
-//     children: [{ name: 'Apple' }, { name: 'Banana' }, { name: 'Fruit loops' }],
-//   },
-//   {
-//     name: 'Vegetables',
-//     children: [
-//       {
-//         name: 'Green',
-//         children: [{ name: 'Broccoli' }, { name: 'Brussels sprouts' }],
-//       },
-//       {
-//         name: 'Orange',
-//         children: [{ name: 'Pumpkins' }, { name: 'Carrots' }],
-//       },
-//     ],
-//   },
-// ];
+interface ChildResponse {
+  id: number;
+  name: string;
+  children: any[];
+}
+
+export interface FactoryWithChildrenNode {
+  id: number;
+  name: string;
+  lowerBoundChildren: number;
+  upperBoundChildren: number;
+  numberOfChildren: number;
+  children: ChildResponse[];
+}
 
 const TREE_DATA: FoodNode[] = [
   {
@@ -56,21 +51,25 @@ const TREE_DATA: FoodNode[] = [
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit {
-  treeControl = new NestedTreeControl<FoodNode>((node) => node.children);
-  dataSource = new MatTreeNestedDataSource<FoodNode>();
+  // treeControl = new NestedTreeControl<FoodNode>((node) => node.children);
+  // dataSource = new MatTreeNestedDataSource<FoodNode>();
+
+  treeControl = new NestedTreeControl<ChildResponse>((node) => node.children);
+  dataSource = new MatTreeNestedDataSource<FactoryWithChildrenNode>();
 
   constructor(private httpClient: HttpClient) {
-    this.dataSource.data = TREE_DATA;
+    // this.dataSource.data = TREE_DATA;
   }
   ngOnInit(): void {
     this.httpClient
-      .get('http://localhost:3000/api/factory')
+      .get<FactoryWithChildrenNode[]>('http://localhost:3000/api/factory')
       .subscribe((data) => {
-        console.warn(data);
+        this.dataSource.data = data;
+        console.warn(`factories data: ${JSON.stringify(data)}`);
       });
   }
 
-  hasChild = (_: number, node: FoodNode) =>
+  hasChild = (_: number, node: FactoryWithChildrenNode) =>
     !!node.children && node.children.length > 0;
 
   deleteFactoryById(factoryNode: any): void {
