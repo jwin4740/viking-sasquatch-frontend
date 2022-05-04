@@ -21,11 +21,11 @@ jobs:
         with:
           node-version: '16.x'
 
-      - name: npm install, build, and test
+      - name: npm install build prod
         run: |
           npm install
-          npm run build --if-present
-          npm run test --if-present
+          npm run build --prod
+        working-directory: .
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v2
@@ -51,6 +51,5 @@ jobs:
         uses: azure/webapps-deploy@v2
         with:
           app-name: 'viking-sas'
-          slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_29B7FB6E9DF04CCEB25FA87983440A53 }}
-          package: .
+          package: ./dist/viking-sasquatch-frontend
