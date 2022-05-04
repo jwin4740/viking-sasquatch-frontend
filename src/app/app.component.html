@@ -365,29 +365,6 @@
 </div> -->
 <!---->
 
-<!-- <div>
-  <div>
-    {{ mockData.name }}
-  </div>
-  <button (click)="editParent()">edit</button>
-  <div *ngIf="false"> -->
-<!-- put input for name -->
-<!-- put input for number of children -->
-<!-- button for confirm -->
-<!-- button for cancel -->
-<!-- </div>
-
-  <div class="children" *ngFor="let child of mockData.children">
-    {{ child | json }}
-
-    <div>
-      {{ child.name }}
-    </div>
-
-    <div *ngIf="child.children"></div>
-  </div>
-</div> -->
-
 <button
   id="createFcatory"
   mat-raised-button
@@ -426,6 +403,7 @@
       <app-factory
         [factoryNode]="node"
         (deleteNodeEmitter)="deleteFactoryById($event)"
+        (generateRandomChildrenEmitter)="generateRandChildren($event)"
       ></app-factory>
     </div>
     <!-- There is inline padding applied to this div using styles.

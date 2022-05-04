@@ -45,7 +45,11 @@
 <div class="factory">
   <mat-form-field appearance="fill">
     <mat-label>Factory Name</mat-label>
-    <input matInput [value]="factoryNode?.name" />
+    <input
+      matInput
+      [value]="factoryNode?.name"
+      (change)="nameUpdated($event)"
+    />
   </mat-form-field>
   <mat-form-field appearance="fill">
     <mat-label>Lower bound children</mat-label>

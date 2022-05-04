@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 import { NestedTreeControl } from '@angular/cdk/tree';
@@ -63,13 +63,19 @@ export class AppComponent implements OnInit {
   ngOnInit(): void {
     this.getAllFactories();
   }
-
+  // @ViewChild('tree') tree;
+  // ngAfterViewInit() {
+  //   this.tree.treeControl.expandAll();
+  // }
   getAllFactories(): void {
     this.httpClient
       .get<FactoryWithChildrenNode[]>('http://localhost:3000/api/factory')
       .subscribe((data) => {
         this.dataSource.data = data;
-        console.warn(`factories data: ${JSON.stringify(data)}`);
+        // this.dataSource.data.forEach((val) => {
+        //   console.warn(val);
+        // });
+        // console.warn(`factories data: ${JSON.stringify(data)}`);
       });
   }
 
@@ -78,82 +84,35 @@ export class AppComponent implements OnInit {
 
   deleteFactoryById(factoryNode: any): void {
     console.log('emitter received');
-    this.httpClient.delete;
+    this.httpClient
+      .delete('http://localhost:3000/api/factory/' + factoryNode.id)
+      .subscribe((data) => this.getAllFactories());
     //after 200 response delete node from this.datasource
-    console.log(factoryNode);
+    // console.log(factoryNode);
   }
 
   generateRandomFactory(numChildren: number): void {
-    console.warn('entered generateRandomFactory');
-
     this.httpClient
       .post('http://localhost:3000/api/factory', {
-        name: faker.name.firstName(),
+        name:
+          faker.name.firstName('male') +
+          ' and ' +
+          faker.name.firstName('female'),
         numberOfChildren: numChildren,
         lowerBoundChildNodes: 1,
         upperBoundChildNodes: 15,
       })
       .subscribe((data) => this.getAllFactories());
   }
+
+  generateRandChildren(j: any): void {
+    this.httpClient
+      .patch('http://localhost:3000/api/factory/' + j.id, {
+        name: j.name,
+        lowerBoundChildNodes: j.lowerBoundChildNodes,
+        upperBoundChildNodes: j.upperBoundChildNodes,
+        numberOfChildren: j.numberOfChildren,
+      })
+      .subscribe((data) => this.getAllFactories());
+  }
 }
-
-// /**
-//  * Food data with nested structure.
-//  * Each node has a name and an optional list of children.
-//  */
-// interface FoodNode {
-//   name: string;
-//   children?: FoodNode[];
-// }
-
-// const TREE_DATA = {
-//   name: 'Vegetables',
-
-//   children: [
-//     {
-//       name: 'Green',
-//       children: [{ name: 'Broccoli' }, { name: 'Brussels sprouts' }],
-//     },
-//     {
-//       name: 'Orange',
-//       children: [{ name: 'Pumpkins' }, { name: 'Carrots' }],
-//     },
-//   ],
-// };
-
-// interface FactoryData {
-//   id: number;
-//   name: string;
-//   lowerBoundChildNodes: number;
-//   upperBoundChildNodes: number;
-//   numberChildrenToCreate: number;
-//   createdDate: string;
-//   updatedDate: string;
-//   chidren: Array<any>;
-// }
-
-// @Component({
-//   selector: 'app-root',
-//   templateUrl: './app.component.html',
-//   styleUrls: ['./app.component.scss'],
-// })
-// export class AppComponent implements OnInit {
-//   title = 'angular-tree-project';
-
-//   mockData: any = TREE_DATA;
-
-//   constructor(private httpClient: HttpClient) {}
-//   ngOnInit(): void {
-//     // this.httpClient.get('http://localhost:3000/api/factory').subscribe(data => {
-//     //   console.log(data)
-//     //   this.httpClient.get('http://localhost:3000/api/child').subscribe(data => {
-//     //     console.log(data)
-//     //   // this.dataSource.data = data
-//     // })
-//   }
-
-//   editParent(): void {}
-
-//   hasChild = (_: number, node: FoodNode) =>
-//     !!node.children && node.children.length > 0;
-// }
