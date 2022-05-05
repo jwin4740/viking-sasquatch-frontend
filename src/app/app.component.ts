@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { NestedTreeControl } from '@angular/cdk/tree';
 import { MatTree, MatTreeNestedDataSource } from '@angular/material/tree';
 import { faker } from '@faker-js/faker';
+import { environment } from 'src/environments/environment';
 /**
  * Food data with nested structure.
  * Each node has a name and an optional list of children.
@@ -74,7 +75,7 @@ export class AppComponent implements OnInit, AfterViewInit {
 
   getAllFactories(): void {
     this.httpClient
-      .get<FactoryWithChildrenNode[]>('http://localhost:3000/api/factory')
+      .get<FactoryWithChildrenNode[]>(environment.baseUrl + '/api/factory')
       .subscribe((data) => {
         this.dataSource.data = data;
         this.treeControl.dataNodes = data;
@@ -93,7 +94,7 @@ export class AppComponent implements OnInit, AfterViewInit {
   deleteFactoryById(factoryNode: any): void {
     console.log('emitter received');
     this.httpClient
-      .delete('http://localhost:3000/api/factory/' + factoryNode.id)
+      .delete(environment.baseUrl + '/api/factory/' + factoryNode.id)
       .subscribe((data) => this.getAllFactories());
     //after 200 response delete node from this.datasource
     // console.log(factoryNode);
@@ -101,7 +102,7 @@ export class AppComponent implements OnInit, AfterViewInit {
 
   generateRandomFactory(numChildren: number): void {
     this.httpClient
-      .post('http://localhost:3000/api/factory', {
+      .post(environment.baseUrl + '/api/factory', {
         name:
           faker.name.firstName('male') +
           ' and ' +
@@ -115,7 +116,7 @@ export class AppComponent implements OnInit, AfterViewInit {
 
   generateRandChildren(j: any): void {
     this.httpClient
-      .patch('http://localhost:3000/api/factory/' + j.id, {
+      .patch(environment.baseUrl + '/api/factory/' + j.id, {
         name: j.name,
         lowerBoundChildNodes: j.lowerBoundChildNodes,
         upperBoundChildNodes: j.upperBoundChildNodes,
