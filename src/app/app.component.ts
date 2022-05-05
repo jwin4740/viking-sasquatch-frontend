@@ -1,8 +1,8 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 import { NestedTreeControl } from '@angular/cdk/tree';
-import { MatTreeNestedDataSource } from '@angular/material/tree';
+import { MatTree, MatTreeNestedDataSource } from '@angular/material/tree';
 import { faker } from '@faker-js/faker';
 /**
  * Food data with nested structure.
@@ -50,7 +50,7 @@ const TREE_DATA: FoodNode[] = [
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, AfterViewInit {
   // treeControl = new NestedTreeControl<FoodNode>((node) => node.children);
   // dataSource = new MatTreeNestedDataSource<FoodNode>();
 
@@ -67,11 +67,19 @@ export class AppComponent implements OnInit {
   // ngAfterViewInit() {
   //   this.tree.treeControl.expandAll();
   // }
+  @ViewChild(MatTree) tree: any;
+  ngAfterViewInit() {
+    // this.tree.treeControl.expandAll();
+  }
+
   getAllFactories(): void {
     this.httpClient
       .get<FactoryWithChildrenNode[]>('http://localhost:3000/api/factory')
       .subscribe((data) => {
         this.dataSource.data = data;
+        this.treeControl.dataNodes = data;
+        this.tree.treeControl.expandAll();
+        console.log(this.tree.treeControl);
         // this.dataSource.data.forEach((val) => {
         //   console.warn(val);
         // });
