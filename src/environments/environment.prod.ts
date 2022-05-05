@@ -1,4 +1,9 @@
+// export const environment = {
+//   production: true,
+//   baseUrl: 'https://viking-sas-backend.azurewebsites.net',
+// };
+
 export const environment = {
   production: true,
-  baseUrl: 'https://viking-sas-backend.azurewebsites.net',
+  baseUrl: 'http://localhost:3000',
 };
